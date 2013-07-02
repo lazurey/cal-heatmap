@@ -21,10 +21,11 @@
 <div id="cal-heatmap"></div>
 <div>
 	<h2>Dates you need to push</h2>
+	<p>Charactors avaluable: A-Z, !</p>
 	<ul id="push-date"></ul>
 </div>
 <script type="text/javascript">
-	var weight = 120,
+	var weight = 2,
 		daySec = 86400,
 		weekSec = daySec * 7;
 	// console.log(testJson);
@@ -54,12 +55,12 @@
 		cal.init({
 			data: datas,
 			afterLoadData: parser,
-			start: new Date(2013, 1),
+			start: new Date(2013, 6),
 			domain: "year",
 			subDomain: "day",
 			range: 2,
 			startWeekOnMonday: 0,
-			scale: [40, 60, 80, 100]
+			scale: [1, 2, 3, 4, 5]
 		});
 	}
 
@@ -83,7 +84,15 @@
 				//console.log(date);
 				charJson += '"' + nextStartTime + '" : ' + weight + ',';
 				//console.log(nextStartTime);
+				if (posY < 2) {
+					weight = 5;
+				} else if (posY < 4) {
+					weight = 4;
+				} else if (posY < 6) {
+					weight = 3;
+				}
 				var tempArr = {date: nextStartTime, "value": weight};
+				weight = 2;
 				datas.push(tempArr);
 			}
 		} else {
