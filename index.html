@@ -15,26 +15,26 @@
 </head>
 <body>
 <h1>Github</h1>
-<p>Start to push from next Sunday!</p>
-<label>Input the word you want to show: </label>
-<input name="word" type="text" id="word" onkeyup="printCalendar();">
+<div>
+	<p>Start to push from next Sunday!</p>
+	<label>Input the word you want to show: </label>
+	<input name="word" type="text" id="word" onkeyup="printCalendar();">
+	<p>Charactors avaluable: A-Z, !</p>
+</div>
 <div id="cal-heatmap"></div>
 <div>
 	<h2>Dates you need to push</h2>
-	<p>Charactors avaluable: A-Z, !</p>
 	<ul id="push-date"></ul>
 </div>
 <script type="text/javascript">
 	var weight = 2,
 		daySec = 86400,
 		weekSec = daySec * 7;
-	// console.log(testJson);
 
 	function printCalendar() {
 		document.getElementById('cal-heatmap').innerHTML = "";
 		document.getElementById('push-date').innerHTML = "";
 		var word = document.getElementById('word').value,
-			// startTime = new Date().getTime(),
 			startTime = getNextSunday(),
 			datas = [],
 			dataJson = "{";
@@ -46,10 +46,6 @@
 			dataJson += result[1];
 			datas = result[2];
 		}
-		//console.log(datas);
-		// dataJson = dataJson.subString()
-
-
 
 		var cal = new CalHeatMap();
 		cal.init({
@@ -71,19 +67,16 @@
 		var nextStartTime = startTime;
 		var pushDateDiv = document.getElementById('push-date');
 		// if not found, c = undefined, return {startTime, ""}
-		if (c != undefined && c != null & c.length > 1) {
+		if (c != undefined && c != null & c.length > 0) {
 			for (var i = 0; i < c.length; i++) {
 				var posX = c[i][0],
 					posY = c[i][1];
 				var posTimestamp = weekSec * posX + daySec * posY;
-				//document.getElementById('push-date').innerHtml(date);
 				nextStartTime = startTime + posTimestamp;
 				var date = new Date(nextStartTime * 1000);
 				pushDateDiv.insertAdjacentHTML('beforeend', '<li>' + 
 				date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '</li>')
-				//console.log(date);
 				charJson += '"' + nextStartTime + '" : ' + weight + ',';
-				//console.log(nextStartTime);
 				if (posY < 2) {
 					weight = 5;
 				} else if (posY < 4) {
@@ -113,12 +106,7 @@
 			date = new Date(curTime * 1000),
 			diff = sundayFlag - date.getDay();
 		var sunday = Math.ceil(curTime + diff * daySec);
-		// console.log(new Date(sunday * 1000));
 		return sunday;
-	}
-
-	function convertToObj(dataJson) {
-
 	}
 
 	var parser = function(data) {
