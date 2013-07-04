@@ -24,6 +24,7 @@
 <div id="cal-heatmap"></div>
 <div>
 	<h2>Dates you need to push</h2>
+	<p id="total"></p>
 	<ul id="push-date"></ul>
 </div>
 <script type="text/javascript">
@@ -34,10 +35,12 @@
 	function printCalendar() {
 		document.getElementById('cal-heatmap').innerHTML = "";
 		document.getElementById('push-date').innerHTML = "";
+		document.getElementById('total').innerHTML = "";
 		var word = document.getElementById('word').value,
 			startTime = getNextSunday(),
 			datas = [],
-			dataJson = "{";
+			dataJson = "{",
+			totalCommit = 0;
 
 		for (var i = 0; i < word.length; i++) {
 			var foo = word.charAt(i);
@@ -45,7 +48,9 @@
 			startTime = result[0];
 			dataJson += result[1];
 			datas = result[2];
+			totalCommit += result[3];
 		}
+		document.getElementById('total').innerHTML = "Total commit: " + totalCommit;
 
 		var cal = new CalHeatMap();
 		cal.init({
@@ -63,8 +68,9 @@
 	function getCharJson(c, datas, startTime, font) {
 		font = typeof font !== 'undefined' ? font : charAssets;
 		c = font[c];
-		var charJson = "";
-		var nextStartTime = startTime;
+		var charJson = "",
+		    nextStartTime = startTime,
+		    totalCommit = 0;
 		var pushDateDiv = document.getElementById('push-date');
 		// if not found, c = undefined, return {startTime, ""}
 		if (c != undefined && c != null & c.length > 0) {
@@ -85,6 +91,7 @@
 					weight = 3;
 				}
 				var tempArr = {date: nextStartTime, "value": weight};
+				totalCommit += weight;
 				weight = 2;
 				datas.push(tempArr);
 			}
@@ -96,7 +103,7 @@
 		weekCount = Math.ceil(weekCount);
 		weekCount = ((weekCount - weekCountTest) > 0) ? weekCount : weekCount + 1;
 		nextStartTime = startTime + weekSec * (weekCount + 1);
-		var result = {0: nextStartTime, 1: charJson, 2: datas};
+		var result = {0: nextStartTime, 1: charJson, 2: datas, 3: totalCommit};
 		return result;
 	}
 
