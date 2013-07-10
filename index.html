@@ -54,13 +54,14 @@
 
 		var cal = new CalHeatMap();
 		cal.init({
+			startWeekOnMonday: 0,
+			id: "cal-heatmap",
+			range: 2,
+			domain: "year",
+			subDomain: "day",
 			data: datas,
 			afterLoadData: parser,
 			start: new Date(2013, 6),
-			domain: "year",
-			subDomain: "day",
-			range: 2,
-			startWeekOnMonday: 0,
 			scale: [1, 2, 3, 4, 5]
 		});
 	}
